@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Buscar CEP</title>
+  </head>
+
+  <body>
+    <h1>Aonde você vai?</h1>
+    <input
+      type="text"
+      id="cep"
+      maxlength="8"
+      minlength="8"
+      placeholder="Insira o número"
+    />
+    <button onclick="buscarCEP()">Procurar</button>
+    <p class="lupa">🔎</p>
+    <div id="resultado"></div>
+
+    <script>
+      function buscarCEP() {
+        let cep = document.getElementById("cep").value;
+        let url = `https://viacep.com.br/ws/${cep}/json`;
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.erro) {
+              document.getElementById("resultado").innerHTML =
+                "CEP não encontrado.";
+            } else {
+              document.getElementById("resultado").innerHTML = `
+                    <p><strong>📍 CEP </strong>:${data.cep}</p>
+                     <p><strong>⭐ Logradouro</strong>: ${data.logradouro}</p>
+                     <p><strong>⭐ Bairro</strong>: ${data.bairro}</p>
+                     <p><strong>⭐ Localidade</strong>: ${data.localidade}</p>
+                    `;
+            }
+          })
+          .catch(
+            (error) =>
+              (document.getElementById("resultado").innerHTML =
+                "CEP não encontrado.")
+          );
+      }
+    </script>
+  </body>
+</html>
